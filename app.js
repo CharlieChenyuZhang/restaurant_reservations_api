@@ -91,7 +91,7 @@ if ('hourResv' in yargs_argv) {
 	// Produce output below
 	log("Reservations in the next hour:")
 	reservationsForRestaurant.map((reser) => {
-		const dateyeartime =  datetime.format(datetime.parse(reser.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ'), 'MMM DD YYYY, h:mm A,')
+		const dateyeartime =  datetime.format(datetime.parse(reser.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ', true), 'MMM DD YYYY, h:mm A,')
 		log(`- ${reser.restaurant}: ${dateyeartime} table for ${reser.people}`)
 	})
 }
