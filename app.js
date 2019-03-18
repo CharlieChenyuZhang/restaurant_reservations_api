@@ -36,7 +36,7 @@ if ('addResv' in yargs_argv) {
 	const resv = reservations.addReservation(args[0], args[1], args[2]);
 
 	// Produce output below
-	let reservation_time = datetime.format(datetime.parse(args[1], 'MMM DD YYYY HH:mm:ss', true), 'MMMM DD YYYY at h:m A ')
+	let reservation_time = datetime.format(resv.time, 'MMMM DD YYYY at h:mm A ')
 	let reservation_num_people = "for " + args[2].toString() + " people."
 	log("Added reservation at " + args[0] + ' on ' + reservation_time + reservation_num_people)
 }
@@ -78,7 +78,7 @@ if ('allResv' in yargs_argv) {
 	
 	// log the sorted array in the given format
 	sortedReservations.map((reser) => {
-		const dateyeartime =  datetime.format(datetime.parse(reser.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ', true), 'MMM DD YYYY, h:m A,')
+		const dateyeartime =  datetime.format(datetime.parse(reser.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ', true), 'MMM DD YYYY, h:mm A,')
 		log(`- ${dateyeartime} table for ${reser.people}`)
 	})
 	
@@ -91,7 +91,7 @@ if ('hourResv' in yargs_argv) {
 	// Produce output below
 	log("Reservations in the next hour:")
 	reservationsForRestaurant.map((reser) => {
-		const dateyeartime =  datetime.format(datetime.parse(reser.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ', true), 'MMM DD YYYY, h:m A,')
+		const dateyeartime =  datetime.format(datetime.parse(reser.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ'), 'MMM DD YYYY, h:mm A,')
 		log(`- ${reser.restaurant}: ${dateyeartime} table for ${reser.people}`)
 	})
 }
@@ -101,7 +101,7 @@ if ('checkOff' in yargs_argv) {
 	const earliestReservation = reservations.checkOffEarliestReservation(restaurantName); 
 	
 	// Produce output below
-	const dateyeartime =  datetime.format(datetime.parse(earliestReservation.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ', true), 'MMM DD YYYY, h:m A,')
+	const dateyeartime =  datetime.format(datetime.parse(earliestReservation.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ', true), 'MMM DD YYYY, h:mm A,')
 	log(`Checked off reservation on ${dateyeartime} table for ${earliestReservation.people}`)	
 }
 
@@ -112,7 +112,7 @@ if ('addDelay' in yargs_argv) {
 	// Produce output below
 	log(`Reservations for ${args[0]}:`)
 	resv.forEach((each) => {
-		const dateyeartime =  datetime.format(each.time, 'MMM DD YYYY, h:m A,')
+		const dateyeartime =  datetime.format(each.time, 'MMM DD YYYY, h:mm A,')
 		log(`- ${dateyeartime} table for ${each.people}`)
 	})	
 }
@@ -124,7 +124,7 @@ if ('status' in yargs_argv) {
 	log(`Number of restaurants: ${status.numRestaurants}`)
 	log(`Number of total reservations: ${status.totalReservations}`)
 	log(`Busiest restaurant: ${status.currentBusiestRestaurantName}`)
-	log(`System started at: ${datetime.format(datetime.parse(status.systemStartTime, 'YYYY-MM-DDTHH:mm:ss.SSSZ', true), 'MMM DD, YYYY, h:m A')}`)
+	log(`System started at: ${datetime.format(datetime.parse(status.systemStartTime, 'YYYY-MM-DDTHH:mm:ss.SSSZ', true), 'MMM DD, YYYY, h:mm A')}`)
 	
 }
 

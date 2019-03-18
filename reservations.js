@@ -92,7 +92,7 @@ const addReservation = (restaurant, time, people) => {
 
 	const reservation = {
 		restaurant,
-		time: datetime.parse(time, 'MMM DD YYYY HH:mm:ss', true),
+		time: datetime.parse(time, 'MMM DD YYYY HH:mm:ss'),
 		people
 	}
 
@@ -161,7 +161,7 @@ const getAllReservationsForRestaurant = (name) => {
 // Should return an array
 const getReservationsForHour = (time) => {
 	/* Add your code below */
-	const currentDateTime = parseInt(datetime.format(datetime.parse(time, 'MMM DD YYYY HH:mm:ss', true), 'YYYYMMDDHHmmss'))
+	const currentDateTime = parseInt(datetime.format(datetime.parse(time, 'MMM DD YYYY HH:mm:ss'), 'YYYYMMDDHHmmss'))
 	const nextHour = currentDateTime + 10000
 	const reservations = getAllReservations()
 	const result = []
