@@ -27,19 +27,28 @@ const startSystem = () => {
 
 /*********/
 
-//TODO: 
 // You may edit getSystemStatus below.  You will need to call updateSystemStatus() here, which will write to the json file
 const getSystemStatus = () => {
+	// update the status.json file
+	updateSystemStatus()
 	const status = fs.readFileSync('status.json')
-
 	return JSON.parse(status)
 }
 
 /* Helper functions to save JSON */
 const updateSystemStatus = () => {
-	const status = {}
-	
 	/* Add your code below */
+	
+	// update the status below
+	const old_status = fs.readFileSync('status.json')
+
+	const status = {
+		numRestaurants: getAllRestaurants().length,
+		totalReservations: getAllReservations().length,
+		currentBusiestRestaurantName: find_busiest_restaurant(),
+		systemStartTime: JSON.parse(old_status).systemStartTime
+	}
+
 
 	fs.writeFileSync('status.json', JSON.stringify(status))
 }
@@ -83,7 +92,7 @@ const addReservation = (restaurant, time, people) => {
 
 	const reservation = {
 		restaurant,
-		time: datetime.parse(time, 'MMM DD YYYY HH:mm:ss'),
+		time: datetime.parse(time, 'MMM DD YYYY HH:mm:ss', true),
 		people
 	}
 
@@ -152,12 +161,12 @@ const getAllReservationsForRestaurant = (name) => {
 // Should return an array
 const getReservationsForHour = (time) => {
 	/* Add your code below */
-	const currentDateTime = parseInt(datetime.format(datetime.parse(time, 'MMM DD YYYY HH:mm:ss'), 'YYYYMMDDHHmmss'))
+	const currentDateTime = parseInt(datetime.format(datetime.parse(time, 'MMM DD YYYY HH:mm:ss', true), 'YYYYMMDDHHmmss'))
 	const nextHour = currentDateTime + 10000
 	const reservations = getAllReservations()
 	const result = []
 	reservations.map((reser) => {
-		const reser_time = parseInt(datetime.format(datetime.parse(reser.time, 'YYYY-MM-DDTHH:mm:ss.000Z'), 'YYYYMMDDHHmmss'))
+		const reser_time = parseInt(datetime.format(datetime.parse(reser.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ', true), 'YYYYMMDDHHmmss'))
 		if (reser_time >= currentDateTime && reser_time <= nextHour) {
 			result.push(reser)
 		}
@@ -173,8 +182,8 @@ const checkOffEarliestReservation = (restaurantName) => {
 
 	const sortedReservations = reservationsForRestaurant.sort(
 		function(a, b) {
-			const int_a = parseInt(datetime.format(datetime.parse(a.time, 'YYYY-MM-DDTHH:mm:ss.000Z'), 'YYYYMMDDHHmmss'))
-			const int_b = parseInt(datetime.format(datetime.parse(b.time, 'YYYY-MM-DDTHH:mm:ss.000Z'), 'YYYYMMDDHHmmss'))
+			const int_a = parseInt(datetime.format(datetime.parse(a.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ', true), 'YYYYMMDDHHmmss'))
+			const int_b = parseInt(datetime.format(datetime.parse(b.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ', true), 'YYYYMMDDHHmmss'))
 			return int_a - int_b
 		})
 
@@ -216,6 +225,18 @@ const addDelayToReservations = (restaurant, minutes) => {
 	return new_reservation_info
 }
 
+// return the name of the busiest restaurant
+const find_busiest_restaurant = () => {
+	const restaurants = getAllRestaurants()
+	const result = restaurants.sort(
+		function(a, b) {
+			const int_a = a.numReservations
+			const int_b = b.numReservations
+			return int_b - int_a
+		}
+	)
+	return result[0].name
+}
 startSystem(); // start the system to create status.json (should not be called in app.js)
 
 // May not need all of these in app.js..but they're here.
