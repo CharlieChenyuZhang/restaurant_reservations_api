@@ -205,12 +205,8 @@ const addDelayToReservations = (restaurant, minutes) => {
 	const reservations = getAllReservations()
 	reservations.map((reser) => {
 		if (reser.restaurant === restaurant) {
-			// TODO: currently working on
-			// log(typeof(datetime.parse(reser.time, 'YYYY-MM-DDTHH:mm:ss.000Z')))
-			// log("old", reser.time)
-			const new_time = datetime.addMinutes(datetime.parse(reser.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ'), minutes)
-			// log("new", new_time)
-			reser.time =  datetime.parse(new_time, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
+			const new_time = datetime.addMinutes(datetime.parse(reser.time, 'YYYY-MM-DDTHH:mm:ss.SSSZ', true), minutes)
+			reser.time = new_time
 			new_reservation_info.push(reser)
 		}
 	})

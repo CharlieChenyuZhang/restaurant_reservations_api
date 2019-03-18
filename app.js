@@ -109,13 +109,11 @@ if ('addDelay' in yargs_argv) {
 	const args = yargs_argv['addDelay']
 
 	const resv = reservations.addDelayToReservations(args[0], args[1]);	
-
 	// Produce output below
-	log(resv)
 	log(`Reservations for ${args[0]}:`)
 	resv.forEach((each) => {
-		const dateyeartime =  datetime.format(datetime.parse(each.time, 'YYYY-MM-DDTHH:mm:ss.000Z'), 'MMM DD YYYY, h:m A,')
-		log(`- ${dateyeartime} table for ${each.people}`)	
+		const dateyeartime =  datetime.format(each.time, 'MMM DD YYYY, h:m A,')
+		log(`- ${dateyeartime} table for ${each.people}`)
 	})
 	
 
